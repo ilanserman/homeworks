@@ -38,9 +38,6 @@ public class Portfolio {
 		LocalDate ed = LocalDate.parse(endDate);
 
 		long days = ChronoUnit.DAYS.between(sd, ed);
-		System.out.println("days: " + days);
-		System.out
-				.println("pvt/pvt-1: " + Math.pow((portfolioValue(endDate) / portfolioValue(startDate)), (252 / days)));
 		return -1 + Math.pow((portfolioValue(endDate) / portfolioValue(startDate)), (252 / days));
 	}
 
@@ -53,10 +50,9 @@ public class Portfolio {
 		google.updateQuotes(Stock.goog);
 		microsoft.updateQuotes(Stock.msft);
 
-		System.out.println(Stock.getPriceWithDate(google, "2020-08-07"));
-		System.out.println(Stock.getPriceWithDate(microsoft, "2020-08-05"));
-		System.out.println("p value 2020 08 04: " + alpha.portfolioValue("2020-08-04"));
-		System.out.println(alpha.calculateProfit("2020-08-04", "2020-08-06"));
+		//System.out.println(Stock.getPriceWithDate(google, "2020-08-07"));
+		//System.out.println(Stock.getPriceWithDate(microsoft, "2020-08-05"));
+		System.out.println(alpha.calculateProfit("2020-08-03", "2020-08-07"));
 		System.out.println(alpha.profit("2020-08-03", "2020-08-07"));
 
 	}
@@ -72,20 +68,8 @@ class Stock {
 		this.prices = new TreeMap<>();
 	}
 
-	public String getTicker() {
-		return ticker;
-	}
-
 	public TreeMap<LocalDate, Double> getPrices() {
 		return prices;
-	}
-
-	public void setTicker(String ticker) {
-		this.ticker = ticker;
-	}
-
-	public void setPrices(TreeMap<LocalDate, Double> prices) {
-		this.prices = prices;
 	}
 
 	public void updateQuotes(String[][] quotes) {
