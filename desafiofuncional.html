@@ -1,0 +1,90 @@
+<html>
+<head>
+  <title>Reto Funcional</title>
+</head>
+
+<body>
+  <br>
+  <br>
+  <p>
+    <label for="input-image-url">URL de la imagen</label>
+    <input type="url" id="input-image-url" value="https://ak.picdn.net/shutterstock/videos/21983440/thumb/1.jpg">
+  </p>
+  <p>
+    <label for="rectangle-x">Posición x de rectángulo</label>
+    <input type="number" id="rectangle-x" value="10">
+  </p>
+  <p>
+    <label for="rectangle-y">Posición y de rectángulo</label>
+    <input type="number" id="rectangle-y" value="10">
+  </p>
+  <p>
+    <label for="angle">Ángulo de pegatina (grados)</label>
+    <input type="number" id="angle" value="45">
+  </p>
+  <p>Para guardar imagen modificada, utilizar click derecho y luego guardar como.
+
+    <p>
+      <button id="load-img-btn">Obtener imagen</button>
+      <button id="rotate-img-btn">Rotar imagen</button>
+      <button id="add-square-btn">Agregar/mover pegatina</button>
+      <button id="save-img-btn">Descargar imagen</button>
+    </p>
+    <br>
+    <br>
+    <br>
+    <a id="image-container">
+
+      <script>
+
+      var image = new Image();
+      var rotatedImage = undefined;
+      var canvas = undefined;
+
+      window.onload = () => {
+        this.canvas = document.createElement("canvas");
+        document.getElementById("image-container").appendChild(image);
+      };
+
+      document.getElementById("load-img-btn").addEventListener("click", ev => {
+        image.src = document.getElementById("input-image-url").value;
+        image.setAttribute('crossorigin', 'anonymous'); //CORS
+      });
+
+      document.getElementById("rotate-img-btn").addEventListener("click", ev => {
+        // Create canvas context.
+        let ctx = canvas.getContext("2d");
+        // Assign width and height.
+        canvas.width = image.height;
+        canvas.height = image.width;
+        console.log("initial canvas w:",canvas.width,"initial canvas h:",canvas.height);
+        ctx.translate(canvas.width / 2,canvas.height / 2);
+        ctx.rotate(90 * Math.PI / 180);
+        ctx.drawImage(image,-image.width / 2, -image.height / 2);
+        image.src = canvas.toDataURL("image/png");
+        rotatedImage = image.cloneNode(true);
+        return ctx.resetTransform();
+      });
+
+      document.getElementById("add-square-btn").addEventListener("click", ev => {
+        let ctx = canvas.getContext("2d");
+        ctx.resetTransform();
+
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        ctx.drawImage(rotatedImage,0,0);
+
+        rectangleX = document.getElementById("rectangle-x").value;
+        rectangleY = document.getElementById("rectangle-y").value;
+        angle = document.getElementById("angle").value;
+
+        ctx.rotate(angle * Math.PI / 180);
+        ctx.fillRect(rectangleX , rectangleY , 100 , 50);
+        image.src = canvas.toDataURL("image/png");
+        return ctx.resetTransform();
+      });
+
+    </script>
+  </body>
+  </html>
